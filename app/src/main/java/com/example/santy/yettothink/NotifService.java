@@ -23,6 +23,7 @@ public class NotifService extends Service {
     FirebaseDatabase database=FirebaseDatabase.getInstance();
     DatabaseReference messageDatabaseReference;
     FirebaseAuth auth;
+    static int id=0;
     public NotifService() {
     }
 
@@ -38,6 +39,7 @@ public class NotifService extends Service {
         new Thread(new Runnable() {
             @Override
             public void run() {
+
                 Log.i("Check","In on start");
                 messageDatabaseReference.addChildEventListener(new ChildEventListener() {
                     @Override
@@ -53,7 +55,7 @@ public class NotifService extends Service {
                                 .setAutoCancel(true).build();
                         NotificationManager notificationManager =
                                 (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                        notificationManager.notify(0, n);
+                        notificationManager.notify(id++, n);
                     }
 
                     @Override

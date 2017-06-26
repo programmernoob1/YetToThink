@@ -58,8 +58,6 @@ public class HomeActivity extends AppCompatActivity {
         messageDatabaseReference=database.getReference().child("messages");
         mFirebaseStorage=FirebaseStorage.getInstance();
         mChatPhotosStorageReference=mFirebaseStorage.getReference().child("chat_photos");
-        Intent intent=new Intent(HomeActivity.this,NotifService.class);
-        startService(intent);
         messageDatabaseReference.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -123,8 +121,9 @@ public class HomeActivity extends AppCompatActivity {
                 startActivityForResult(Intent.createChooser(intent, "Complete action using"), RC_PHOTO_PICKER);
             }
         });
+        Intent intent=new Intent(HomeActivity.this,NotifService.class);
+        startService(intent);
     }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
