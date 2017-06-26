@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "724676636729",
+    "firebase_url": "https://yettothink-e25c5.firebaseio.com",
+    "project_id": "yettothink-e25c5",
+    "storage_bucket": "yettothink-e25c5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:724676636729:android:335e5870c1b2f79f",
+        "android_client_info": {
+          "package_name": "com.example.santy.yettothink"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "724676636729-cd1kjfovhkvm5tdh5gv92hbcvcfaimmo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.santy.yettothink",
+            "certificate_hash": "6297fcf357b279d729f2b83c38b5959255727b66"
+          }
+        },
+        {
+          "client_id": "724676636729-0spjhfvl4d1krd4nkj22nu82qr85b3qv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCLPyPqBQWYIGtzIU2dC_plcMRBLXQsqt0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "724676636729-0spjhfvl4d1krd4nkj22nu82qr85b3qv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
