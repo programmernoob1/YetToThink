@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this,LoginPage.class);
+                Intent i = new Intent(MainActivity.this,Main2Activity.class);
                 startActivity(i);
                 Toast.makeText(MainActivity.this,"Hello,button clicked",Toast.LENGTH_SHORT).show();
                 finish();

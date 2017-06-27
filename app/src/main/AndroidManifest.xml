@@ -26,7 +26,12 @@
         <service
             android:name=".NotifService"
             android:enabled="true"
-            android:exported="false"></service>
+            android:exported="false" />
+
+        <activity
+            android:name=".Main2Activity"
+            android:label="@string/title_activity_main2"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
