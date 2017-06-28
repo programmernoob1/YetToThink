@@ -7,6 +7,7 @@ package com.example.santy.yettothink;
 public class AccountUser {
     private String email;
     private String id;
+    public AccountUser(){}
     public AccountUser(String email, String id){
         this.email=email;
         this.id=id;

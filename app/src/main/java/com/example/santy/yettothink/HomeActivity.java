@@ -20,6 +20,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -36,15 +37,21 @@ public class HomeActivity extends AppCompatActivity {
     private EditText mMessageEditText;
     private Button mSendButton;
     FirebaseDatabase database=FirebaseDatabase.getInstance();
-    DatabaseReference messageDatabaseReference;
+    DatabaseReference messageDatabaseReference,chatListReference;
     FirebaseAuth auth;
     private FirebaseStorage mFirebaseStorage;
     private StorageReference mChatPhotosStorageReference;
+    private String startid;
+    private String endid;
+    private String chatId;
     private int RC_PHOTO_PICKER=2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        Intent intent2=getIntent();
+        startid=intent2.getStringExtra("startid");
+        endid=intent2.getStringExtra("endid");
         auth=FirebaseAuth.getInstance();
         List<Message> messageList=new ArrayList<>();
         messageAdapter= new MessageAdapter(this,R.layout.item_message,messageList);
@@ -55,9 +62,16 @@ public class HomeActivity extends AppCompatActivity {
         mSendButton = (Button) findViewById(R.id.sendButton);
         mMessageListView.setAdapter(messageAdapter);
         mProgressBar.setVisibility(ProgressBar.INVISIBLE);
-        messageDatabaseReference=database.getReference().child("messages");
         mFirebaseStorage=FirebaseStorage.getInstance();
         mChatPhotosStorageReference=mFirebaseStorage.getReference().child("chat_photos");
+        if(startid.compareTo(endid)<0) {
+            messageDatabaseReference = database.getReference().child("messages").child(startid + endid);
+            chatId=startid+endid;
+        }
+        else{
+            chatId=endid+startid;
+            messageDatabaseReference = database.getReference().child("messages").child(endid+ startid);
+        }
         messageDatabaseReference.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -122,6 +136,7 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
         Intent intent=new Intent(HomeActivity.this,NotifService.class);
+        intent.putExtra("chatid",chatId);
         startService(intent);
     }
     @Override

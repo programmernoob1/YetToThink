@@ -31,11 +31,13 @@ public class NotifService extends Service {
     public void onCreate() {
         super.onCreate();
         auth=FirebaseAuth.getInstance();
-        messageDatabaseReference=database.getReference().child("messages");
+
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        String chatid=intent.getStringExtra("chatid");
+                messageDatabaseReference=database.getReference().child("messages").child(chatid);
         new Thread(new Runnable() {
             @Override
             public void run() {
