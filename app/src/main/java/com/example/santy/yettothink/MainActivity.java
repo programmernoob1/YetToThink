@@ -15,19 +15,22 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity {
     private EditText inputEmail, inputPassword;
     private Button btnSignIn, btnSignUp, btnResetPassword;
     private ProgressBar progressBar;
     private FirebaseAuth auth;
-
+    private FirebaseDatabase database;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         auth = FirebaseAuth.getInstance();
-
+        database=FirebaseDatabase.getInstance();
         btnSignIn = (Button) findViewById(R.id.sign_in_button);
         btnSignUp = (Button) findViewById(R.id.sign_up_button);
         inputEmail = (EditText) findViewById(R.id.email);
@@ -45,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this,Main2Activity.class);
+                Intent i = new Intent(MainActivity.this,LoginPage.class);
                 startActivity(i);
                 Toast.makeText(MainActivity.this,"Hello,button clicked",Toast.LENGTH_SHORT).show();
                 finish();
@@ -89,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
                                     Toast.makeText(MainActivity.this, "Authentication failed." + task.getException(),
                                             Toast.LENGTH_SHORT).show();
                                 } else {
+                                    createUser(task.getResult().getUser());
                                     startActivity(new Intent(MainActivity.this, LoginPage.class));
                                     finish();
                                 }
@@ -98,5 +102,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+    public void createUser(FirebaseUser user){
+        DatabaseReference reference=database.getReference().child("users");
+        reference.push().setValue(new AccountUser(user.getEmail(),user.getUid()));
     }
 }

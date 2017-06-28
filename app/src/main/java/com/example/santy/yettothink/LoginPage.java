@@ -100,7 +100,7 @@ public class LoginPage extends AppCompatActivity {
                                     }
                                 } else {
                                     Toast.makeText(LoginPage.this, "Loginsuccess", Toast.LENGTH_LONG).show();
-                                    Intent intent = new Intent(LoginPage.this, HomeActivity.class);
+                                    Intent intent = new Intent(LoginPage.this, Main2Activity.class);
                                     startActivity(intent);
                                     finish();
                                 }
