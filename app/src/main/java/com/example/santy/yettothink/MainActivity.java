@@ -1,6 +1,7 @@
 package com.example.santy.yettothink;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
         auth = FirebaseAuth.getInstance();
         database=FirebaseDatabase.getInstance();
@@ -37,7 +39,13 @@ public class MainActivity extends AppCompatActivity {
         inputPassword = (EditText) findViewById(R.id.password);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         btnResetPassword = (Button) findViewById(R.id.btn_reset_password);
-
+        SharedPreferences preferences=MainActivity.this.getSharedPreferences("creds",MODE_PRIVATE);
+        if(preferences.contains("email")){
+            progressBar.setVisibility(View.VISIBLE);
+            Intent intent=new Intent(this,LoginPage.class);
+            startActivity(intent);
+            finish();
+        }
         btnResetPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

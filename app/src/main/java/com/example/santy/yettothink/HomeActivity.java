@@ -165,9 +165,6 @@ public class HomeActivity extends AppCompatActivity {
                 startActivityForResult(Intent.createChooser(intent, "Complete action using"), RC_PHOTO_PICKER);
             }
         });
-        Intent intent=new Intent(HomeActivity.this,NotifService.class);
-        intent.putExtra("chatid",chatId);
-        startService(intent);
     }
 
     @Override
@@ -179,8 +176,9 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
-        Intent serviceIntent=new Intent(HomeActivity.this,NotifService.class);
-        startService(serviceIntent);
+        Intent intent=new Intent(HomeActivity.this,NotifService.class);
+        intent.putExtra("chatid",chatId);
+        startService(intent);
         super.onPause();
     }
 

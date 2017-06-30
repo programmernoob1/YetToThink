@@ -130,6 +130,8 @@ public class Main2Activity extends AppCompatActivity {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
             switch (position) {
+                case 1:
+                    return new Tab2Groups();
                 default:
                     return new Tab1Chats();
             }
@@ -146,9 +148,9 @@ public class Main2Activity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "SECTION 1";
+                    return "Chats";
                 case 1:
-                    return "SECTION 2";
+                    return "Groups";
                 case 2:
                     return "SECTION 3";
             }
