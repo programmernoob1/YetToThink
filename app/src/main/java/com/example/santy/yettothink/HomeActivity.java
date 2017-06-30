@@ -37,7 +37,7 @@ public class HomeActivity extends AppCompatActivity {
     private EditText mMessageEditText;
     private Button mSendButton;
     FirebaseDatabase database=FirebaseDatabase.getInstance();
-    DatabaseReference messageDatabaseReference,chatListReference;
+    DatabaseReference messageDatabaseReference,notificationDatabaseReference;
     FirebaseAuth auth;
     private FirebaseStorage mFirebaseStorage;
     private StorageReference mChatPhotosStorageReference;
@@ -49,6 +49,8 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        Intent serviceIntent=new Intent(HomeActivity.this,NotifService.class);
+        stopService(serviceIntent);
         Intent intent2=getIntent();
         startid=intent2.getStringExtra("startid");
         endid=intent2.getStringExtra("endid");
@@ -72,6 +74,32 @@ public class HomeActivity extends AppCompatActivity {
             chatId=endid+startid;
             messageDatabaseReference = database.getReference().child("messages").child(endid+ startid);
         }
+        notificationDatabaseReference=database.getReference().child("notification").child(auth.getCurrentUser().getUid());
+        notificationDatabaseReference.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                dataSnapshot.getRef().removeValue();
+            }
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
         messageDatabaseReference.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -122,6 +150,8 @@ public class HomeActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // TODO: Send messages on click
                 messageDatabaseReference.push().setValue(new Message(mMessageEditText.getText().toString(),auth.getCurrentUser().getEmail(),null));
+                DatabaseReference notificationReference=database.getReference().child("notification").child(endid);
+                notificationReference.push().setValue(new Notification(startid,mMessageEditText.getText().toString(),auth.getCurrentUser().getEmail()));
                 // Clear input box
                 mMessageEditText.setText("");
             }
@@ -139,19 +169,24 @@ public class HomeActivity extends AppCompatActivity {
         intent.putExtra("chatid",chatId);
         startService(intent);
     }
+
+    @Override
+    protected void onStart() {
+        Intent serviceIntent=new Intent(HomeActivity.this,NotifService.class);
+        stopService(serviceIntent);
+        super.onStart();
+    }
+
+    @Override
+    protected void onPause() {
+        Intent serviceIntent=new Intent(HomeActivity.this,NotifService.class);
+        startService(serviceIntent);
+        super.onPause();
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == RC_SIGN_IN) {
-//            if (resultCode == RESULT_OK) {
-//                // Sign-in succeeded, set up the UI
-//                Toast.makeText(this, "Signed in!", Toast.LENGTH_SHORT).show();
-//            } else if (resultCode == RESULT_CANCELED) {
-//                // Sign in was canceled by the user, finish the activity
-//                Toast.makeText(this, "Sign in canceled", Toast.LENGTH_SHORT).show();
-//                finish();
-//            }
-//        }
         if (requestCode == RC_PHOTO_PICKER && resultCode == RESULT_OK) {
             Uri selectedImageUri = data.getData();
 

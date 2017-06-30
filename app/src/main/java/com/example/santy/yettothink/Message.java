@@ -11,8 +11,8 @@ public class Message{
     private String photoUrl;
 
     public Message() {
-    }
 
+    }
     public Message(String text, String name, String photoUrl) {
         this.text = text;
         this.name = name;
